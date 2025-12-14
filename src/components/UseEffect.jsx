@@ -1,26 +1,26 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
 
 const UseEffect = () => {
-    const [count,setCount] = useState(0);
-    const [start,setStart] = useState(false);
+  const [count, setCount] = useState(0);
+  const [start, setStart] = useState(false);
 
-    useEffect(()=>{
-        if(!start) return
-        const initialTimeId = setInterval(() => {
-            setCount((prev)=>prev+1)
-        }, 1000);
+  useEffect(() => {
+    if (!start) return;
+    const initialTimeId = setInterval(() => {
+      setCount((prev) => prev + 1);
+    }, 1000);
 
-        return()=>{
-            clearInterval(initialTimeId)
-        }
-    },[start])
+    return () => {
+      clearInterval(initialTimeId);
+    };
+  }, [start]);
   return (
     <>
-      <button onClick={()=>setStart(true)} >Start</button>
+      <button onClick={() => setStart(true)}>Start</button>
       <h3>{count}</h3>
-      <button onClick={()=>setStart(false)}>Stop</button>
+      <button onClick={() => setStart(false)}>Stop</button>
     </>
-  )
-}
+  );
+};
 
-export default UseEffect
+export default UseEffect;
