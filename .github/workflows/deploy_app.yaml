@@ -1,6 +1,4 @@
-
-name: Deploy Dist
-# on: [push,workflow_dispatch]
+name: Deploy REACT PROJECTS
 on:                         #for ading filter
   push:
     branches:
@@ -58,20 +56,32 @@ jobs:
               run: npm run build
 
             - name: Upload Dist Folder                  # uploading dist folder as artifact
-              uses: actions/upload-artifact@v4
+              uses: actions/upload-pages-artifact@v3
               with:
-                name: dist-folder               #name must be same while downloading
+                name: github-pages               #name must be same while downloading
                 path: dist/                   #path of the folder to be uploaded
 
     deploy:
-        needs: build                 #this will run after sucessful completion of test job
+        needs: build
         runs-on: ubuntu-latest
-        steps:
-            - name: Download Dist Folder                  #uploading dist folder as artifact
-              uses: actions/download-artifact@v4
-              with:
-                name: dist-folder 
-                path: dist/
-            - name: Deploy
-              run: echo "Deploying the project..."          #for now we use echo only
+        permissions:
+            pages: write      # to deploy to Pages
+            id-token: write   # to verify the deployment originates from an appropriate source
+        environment:
+            name: github-pages
+            url: ${{ steps.deployment.outputs.page_url }}
 
+        steps:
+          - name: Deploy to GitHub Pages
+            id: deployment
+            uses: actions/deploy-pages@v4 # or specific "vX.X.X" version tag for this action
+            with:
+                token : ${{ secrets.GITHUB_TOKEN }} # default token to authenticate the deployment(auto created by github)
+
+
+# add with token 
+# change artifacts to upload github pages artifacts
+# Add repository name in vite config inside base and also add it in package.json file
+# https://username.github.io/repositoryname/
+# https://Ritik8483.github.io/ci_cd_repository_react/
+# base:'/ci_cd_repository_react/',  // add repository name
