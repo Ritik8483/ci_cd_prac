@@ -7,7 +7,7 @@ function App() {
   return (
     <>
       <h1>App Component</h1>
-      {/* <GraphQL/> */}
+      {/* <GraphQL/> */} 
       <UseEffect/>
     </>
   )
