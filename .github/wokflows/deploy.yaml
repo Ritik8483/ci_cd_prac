@@ -5,7 +5,7 @@ jobs:
     greet:
         runs-on: ubuntu-latest
         steps:
-            - name: "greet users with greetings"
+            - name: "greet users"
               run: echo "Hello world!"
 
 
