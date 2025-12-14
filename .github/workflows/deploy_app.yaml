@@ -5,7 +5,7 @@ on:                         #for ading filter
       - main
     paths-ignore:
       - README.md
-      - '.github/workflows/*'               #ignoring changes in these files and doesn't trigger pipeline
+      # - '.github/workflows/*'               #ignoring changes in these files and doesn't trigger pipeline
   workflow_dispatch:
 jobs:
     test:
