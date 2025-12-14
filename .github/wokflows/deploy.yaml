@@ -1,11 +1,11 @@
 name: Greeting
 on: push                #it will trigger the workflow on push event only
-# on: workflow_dispatch
+on: workflow_dispatch
 jobs:
     greet:
         runs-on: ubuntu-latest
         steps:
-            - name: "greet user"
+            - name: "greet users with greetings"
               run: echo "Hello world!"
 
 
