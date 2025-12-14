@@ -16,6 +16,7 @@ const UseEffect = () => {
   }, [start]);
   return (
     <>
+      <p>Ritik</p>
       <button onClick={() => setStart(true)}>Start</button>
       <h3>{count}</h3>
       <button onClick={() => setStart(false)}>Stop</button>

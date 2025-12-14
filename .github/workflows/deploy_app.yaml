@@ -1,0 +1,92 @@
+name: Deploy REACT PROJECTS
+on:                         #for ading filter
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - README.md
+      - '.github/workflows/*'               #ignoring changes in these files and doesn't trigger pipeline
+  workflow_dispatch:
+jobs:
+    test:
+        runs-on: ubuntu-latest
+        steps:
+            - name: "Get Code"
+              uses: actions/checkout@v6
+            - name: Install Node 20
+              uses: actions/setup-node@v4
+              with: 
+                node-version: 20
+            - name: print node version
+              run: node -v
+
+            - name: Cache Dependencies
+              uses: actions/cache@v4
+              with: 
+                path: ~/.npm
+                key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+
+            - name: Install Dependencies
+              run: npm ci 
+            - name: Run Tests
+              run: npm run test
+
+    build:
+        needs: test
+        runs-on: ubuntu-latest
+        steps:
+            - name: "Get Code"
+              uses: actions/checkout@v6
+
+            - name: Install Node 20
+              uses: actions/setup-node@v4
+              with: 
+                node-version: 20
+                  
+            - name: Cache Dependencies
+              uses: actions/cache@v4
+              with: 
+                path: ~/.npm
+                key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+
+            - name: Install Dependencies
+              run: npm ci 
+
+            - name: Build Project
+              run: npm run build
+
+            - name: Upload Dist Folder                  # uploading dist folder as artifact
+              uses: actions/upload-pages-artifact@v3
+              with:
+                name: github-pages               #name must be same while downloading
+                path: dist/                   #path of the folder to be uploaded
+
+    deploy:
+# Add a dependency to the build job
+        needs: build
+        # Specify runner + deployment step
+        runs-on: ubuntu-latest
+        # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
+        permissions:
+            pages: write      # to deploy to Pages
+            id-token: write   # to verify the deployment originates from an appropriate source
+
+        # Deploy to the github-pages environment
+        environment:
+            name: github-pages
+            url: ${{ steps.deployment.outputs.page_url }}
+
+        steps:
+          - name: Deploy to GitHub Pages
+            id: deployment
+            uses: actions/deploy-pages@v4 # or specific "vX.X.X" version tag for this action
+            with:
+                token : ${{ secrets.GITHUB_TOKEN }} # default token to authenticate the deployment(auto created by github)
+
+
+# add with token 
+# change artifacts to upload github pages artifacts
+# Add repository name in vite config inside base and also add it in package.json file
+# https://username.github.io/repositoryname/
+# https://Ritik8483.github.io/ci_cd_repository_react/
+# base:'/ci_cd_repository_react/',  // add repository name
