@@ -9,7 +9,7 @@ const UseEffect = () => {
     const initialTimeId = setInterval(() => {
       setCount((prev) => prev + 1);
     }, 1000);
-
+ 
     return () => {
       clearInterval(initialTimeId);
     };
